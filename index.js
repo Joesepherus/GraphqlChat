@@ -181,9 +181,11 @@ const server = new ApolloServer({ typeDefs, resolvers })
 
 server.applyMiddleware({ app })
 
-app.listen({ port: 4000 }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000`)
-)
+var server = app.listen(process.env.PORT || 4000, function () {
+  var host = server.address().address
+  var port = server.address().port
+  console.log('🚀App listening at http://%s:%s', host, port)
+})
 
 // // The `listen` method launches a web server.
 // server.listen({ port: 4000, cors: true }).then(({ url }) => {
