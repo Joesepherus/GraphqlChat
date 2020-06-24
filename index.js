@@ -1,6 +1,11 @@
-const { ApolloServer, gql } = require('apollo-server')
+const express = require('express')
+const { ApolloServer, gql } = require('apollo-server-express')
 const { PubSub, withFilter } = require('graphql-subscriptions')
+const cors = require('cors')
 const pubsub = new PubSub()
+const app = express()
+app.use(express.static(__dirname + '/client'))
+app.use(cors())
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -172,11 +177,15 @@ const users = [
   { id: 2, name: 'Julia' }
 ]
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
 const server = new ApolloServer({ typeDefs, resolvers })
 
-// The `listen` method launches a web server.
-server.listen({ port: 4000, cors: true }).then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`)
-})
+server.applyMiddleware({ app })
+
+app.listen({ port: 4000 }, () =>
+  console.log(`🚀 Server ready at http://localhost:4000`)
+)
+
+// // The `listen` method launches a web server.
+// server.listen({ port: 4000, cors: true }).then(({ url }) => {
+//   console.log(`🚀  Server ready at ${url}`)
+// })
