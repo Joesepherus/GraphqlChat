@@ -1,0 +1,24 @@
+.center {
+  display: flex;
+  align-items: center;
+}
+
+.headerLeft {
+  padding-left: 20px;
+  cursor: pointer;
+}
+
+.logoText {
+  padding-left: 8px;
+}
+
+.header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  max-height: 50px;
+}
+
+.headerRight {
+  text-align: right;
+  justify-content: flex-end;
+  padding-right: 20px;
+}

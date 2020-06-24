@@ -1,0 +1,31 @@
+.message {
+  margin: 5px;
+}
+
+.messageLeft {
+  display: flex;
+}
+
+.messageRight {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.messageTextUser {
+  border-radius: 10px;
+  background-color: #009aff;
+  padding: 7px;
+  color: white;
+}
+
+.messageTextFriend {
+  border-radius: 10px;
+  background-color: #f1f0f0;
+  padding: 7px;
+  color: black;
+}
+
+.username {
+  font-size: 10px;
+  margin-bottom: 2px;
+}

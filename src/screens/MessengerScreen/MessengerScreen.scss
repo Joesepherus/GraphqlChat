@@ -1,0 +1,19 @@
+.messengerScreenContainer {
+  padding-top: 10px;
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.messages {
+  height: calc(100vh - 123px);
+  overflow: scroll;
+}
+
+.messengerContainer {
+  text-align: left;
+  height: calc(100vh - 123px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding: 10px 20px 0px 20px;
+}

@@ -1,0 +1,95 @@
+
+
+.textInput {
+    position: relative;
+    display: inline-block;
+    width : 100%;
+    .postFixThingy {
+        position: absolute;
+        top: 0.5em;
+        right : 3em;
+    }
+    .preFixThingy {
+        position: absolute;
+        top: 0.5em;
+        left : 0.5em;
+        z-index: 1;
+    }
+    
+    .helperText {
+        color: #AAA;
+        margin-bottom: -1.5em;
+        font-size: 0.75em;   
+    }
+    .textField .helperText {
+        /*margin-left: -0.75em;*/
+        bottom: 0px;
+        position : absolute;
+    }
+
+    .textField, .selectField {
+        width : 100%; //calc(100% - 2.5em);
+        /*border: 1px solid #ddd;*/
+    }   
+    .priceField {
+        text-align: right; 
+        input {
+            text-align: right;     
+            // background : rgba(155,155,155,0.5);
+        }     
+        @media only screen 
+        and (max-device-width: 800px)  {
+            input {
+                text-align: left;
+            }
+        }    
+    }
+
+    &.postFixPadding {
+        margin-right: -0.5em;
+        color: #48494E;
+        .textField {
+            input {
+                padding-right : 2em!important;
+            }             
+        }
+    }
+
+    .textField {
+        
+        background : white;
+        margin-bottom: 1em;
+
+        :before, :after {
+            background: none;
+        }
+
+        &:hover {
+            background : rgba(255,255,255,0.95);
+        }
+        &:hover :before {
+            background : none!important;
+            background-color: white;
+        }
+        input {
+          padding: 1.25em;
+          padding-right: 1.5em;
+          font-family: "Nunito Sans"
+        }        
+        
+        &.smallLetters {
+            input {
+                font-size: 1em;
+                padding: 1em;
+                margin-bottom: 0px;
+            }
+        }
+        &.bigLetters {
+            input {
+                font-size: 1.875rem;
+                padding: 1em;
+                margin-bottom: 0px;
+            }
+        }
+    }
+}
