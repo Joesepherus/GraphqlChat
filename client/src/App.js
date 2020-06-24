@@ -11,14 +11,14 @@ import Router from './Router'
 
 // Maybe later move to a seperate config file for apollo client
 const wsLink = new WebSocketLink({
-  uri: `ws://192.168.1.17:4000/graphql`,
+  uri: `ws://localhost:4000/graphql`,
   options: {
     reconnect: true
   }
 })
 
 const httpLink = new HttpLink({
-  uri: 'http://192.168.1.17:4000/',
+  uri: 'http://localhost:4000/',
   credentials: 'same-origin'
 })
 
