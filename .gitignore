@@ -5,6 +5,7 @@
 /server/node_modules
 /node_modules
 /components
+/client/build
 
 # testing
 /coverage
