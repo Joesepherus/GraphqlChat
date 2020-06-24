@@ -181,9 +181,9 @@ const server = new ApolloServer({ typeDefs, resolvers })
 
 server.applyMiddleware({ app })
 
-var server = app.listen(process.env.PORT || 4000, function () {
-  var host = server.address().address
-  var port = server.address().port
+var expressServer = app.listen(process.env.PORT || 4000, function () {
+  var host = expressServer.address().address
+  var port = expressServer.address().port
   console.log('🚀App listening at http://%s:%s', host, port)
 })
 
