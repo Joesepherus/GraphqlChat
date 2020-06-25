@@ -13,9 +13,8 @@ import 'react-datepicker/dist/react-datepicker.css'
  * @param {bool} timeOnly - If true Datepicker will only display time
  * @param {string} placement - Describes where the Datepicker popup will be opened
  */
-const CustomDatePicker = props => {
+const CustomDatePicker = (props) => {
   const { selectedDate, onChange, timeOnly, placement } = props
-  console.log('props: ', props)
   let otherProps = {}
   if (!timeOnly)
     otherProps = {
@@ -41,7 +40,7 @@ const CustomDatePicker = props => {
         // minDate={new Date()}
         selected={selectedDate}
         value={selectedDate}
-        onChange={date => {
+        onChange={(date) => {
           onChange(date)
         }}
         // {...otherProps}

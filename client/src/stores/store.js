@@ -14,7 +14,6 @@ class store {
 
   async login(data) {
     if (data) {
-      console.log('login data: ', data)
       this.user = data.user
       setLoginStatus(true, data.user.id)
       showToast(data.response, 'info')
@@ -43,7 +42,6 @@ class store {
       })
       .then((response) => {
         user = response.data.user
-        console.log('response.data', response.data)
         if (user) {
           this.user = user
           this.setLoggedIn(true)
@@ -51,7 +49,6 @@ class store {
           setLoginStatus(false)
         }
       })
-    console.log('user: ', user)
     return user
   }
 }

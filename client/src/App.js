@@ -10,7 +10,7 @@ import { getMainDefinition } from 'apollo-utilities'
 import Router from './Router'
 
 const isHttps = () => window.location.protocol.includes('s')
-console.log('window.location.host: ', window.location.host)
+
 // Maybe later move to a seperate config file for apollo client
 const wsLink = new WebSocketLink({
   uri: `${isHttps() ? 'wss' : 'ws'}://${

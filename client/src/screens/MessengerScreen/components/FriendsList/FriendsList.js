@@ -75,7 +75,6 @@ const FriendList = (props) => {
             const newMessages =
               newMessagesFrom &&
               newMessagesFrom.find((message) => message.id == friend.id)
-            console.log('newMessages: ', newMessages)
             return (
               <div
                 className={friendListClass}
