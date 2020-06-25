@@ -1,5 +1,5 @@
 ## GraphQL Chat 
-This project is a basic web chat application built with React on frontend and Apollo express server. Styling should remind you of good old facebook.<br/><br />
+This project is a basic web chat application built with React on frontend and Apollo express server. Styling should remind you of good old facebook.<br/>
 
 Deployed at: https://cracked-facebook.herokuapp.com/
 
