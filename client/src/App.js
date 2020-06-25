@@ -12,7 +12,7 @@ import Router from './Router'
 const isHttps = () => window.location.protocol.includes('s')
 // Maybe later move to a seperate config file for apollo client
 const wsLink = new WebSocketLink({
-  uri: `${isHttps() ? 'wss' : 'ws'}://${window.location.host}/graphql`,
+  uri: `${isHttps() ? 'wss' : 'ws'}://${window.location.host}/`,
   options: {
     reconnect: true
   }
