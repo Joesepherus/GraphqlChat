@@ -13,14 +13,22 @@ const isHttps = () => window.location.protocol.includes('s')
 console.log('window.location.host: ', window.location.host)
 // Maybe later move to a seperate config file for apollo client
 const wsLink = new WebSocketLink({
-  uri: `${isHttps() ? 'wss' : 'ws'}://${window.location.host}/graphql`,
+  uri: `${isHttps() ? 'wss' : 'ws'}://${
+    process.env.REACT_APP_SERVER_URL
+      ? process.env.REACT_APP_SERVER_URL
+      : window.location.host
+  }/graphql`,
   options: {
     reconnect: true
   }
 })
 
 const httpLink = new HttpLink({
-  uri: '/graphql',
+  uri: `${
+    process.env.REACT_APP_SERVER_URL
+      ? 'http://' + process.env.REACT_APP_SERVER_URL
+      : ''
+  }/graphql`,
   credentials: 'same-origin'
 })
 
