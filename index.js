@@ -2,6 +2,7 @@ const express = require('express')
 const { ApolloServer, gql } = require('apollo-server-express')
 const { PubSub, withFilter } = require('graphql-subscriptions')
 const cors = require('cors')
+const http = require('http')
 const pubsub = new PubSub()
 const app = express()
 app.use(express.static(__dirname + '/client'))
@@ -181,13 +182,30 @@ const server = new ApolloServer({ typeDefs, resolvers })
 
 server.applyMiddleware({ app })
 
-var expressServer = app.listen(process.env.PORT || 4000, function () {
-  var host = expressServer.address().address
-  var port = expressServer.address().port
-  console.log('🚀App listening at http://%s:%s', host, port)
-})
+// var expressServer = app.listen(process.env.PORT || 4000, function () {
+//   var host = expressServer.address().address
+//   var port = expressServer.address().port
+//   console.log('🚀App listening at http://%s:%s', host, port)
+// })
 
 // // The `listen` method launches a web server.
 // server.listen({ port: 4000, cors: true }).then(({ url }) => {
 //   console.log(`🚀  Server ready at ${url}`)
 // })
+
+const httpServer = http.createServer(app)
+server.installSubscriptionHandlers(httpServer)
+
+// ⚠️ Pay attention to the fact that we are calling `listen` on the http server variable, and not on `app`.
+httpServer.listen(process.env.PORT || 4000, () => {
+  console.log(
+    `🚀 Server ready at http://localhost:${process.env.PORT || 4000}${
+      server.graphqlPath
+    }`
+  )
+  console.log(
+    `🚀 Subscriptions ready at ws://localhost:${process.env.PORT || 4000}${
+      server.subscriptionsPath
+    }`
+  )
+})
