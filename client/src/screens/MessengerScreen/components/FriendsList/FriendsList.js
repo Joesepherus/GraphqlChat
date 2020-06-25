@@ -6,7 +6,7 @@ import { mdiAccount } from '@mdi/js'
 import CustomIcon from '../../../../components/Icon/Icon'
 
 const onlineUsersQuery = gql`
-  query onlineUsers($id: String!) {
+  query onlineUsers($id: Int!) {
     onlineUsers(id: $id) {
       id
       name
@@ -15,25 +15,22 @@ const onlineUsersQuery = gql`
 `
 
 const USER_LOGGED_IN_SUBSCRIPTION = gql`
-  subscription onUserLoggedIn($repoFullName: String) {
-    userLoggedIn(repoFullName: $repoFullName) {
+  subscription onUserLoggedIn {
+    userLoggedIn {
       id
       name
       online
     }
   }
 `
-const repoFullName = 'apollographql/apollo-client'
-
 const FriendList = (props) => {
   const { onSelectFriend, selectedFriend, user, newMessagesFrom } = props
+
   const [onlineUsers, setOnlineUsers] = useState([])
   const { data, refetch } = useQuery(onlineUsersQuery, {
     variables: { id: user.id }
   })
-  const { data: newUser } = useSubscription(USER_LOGGED_IN_SUBSCRIPTION, {
-    variables: { repoFullName: repoFullName }
-  })
+  const { data: newUser } = useSubscription(USER_LOGGED_IN_SUBSCRIPTION)
 
   useEffect(() => {
     refetch()
@@ -58,7 +55,6 @@ const FriendList = (props) => {
         const userIndex = onlineUsersNew.findIndex(
           (user) => user.id == newUser.userLoggedIn.id
         )
-        console.log('userIndex: ', userIndex)
         if (userIndex !== -1) {
           onlineUsersNew.splice(userIndex, 1)
           setOnlineUsers(onlineUsersNew)

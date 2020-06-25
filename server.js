@@ -15,20 +15,19 @@ const typeDefs = gql`
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
   type User {
-    id: String
+    id: Int
     name: String
     messages: [Message]
     online: Boolean
   }
   type Message {
-    id: String
+    id: Int
     text: String
     from: User
     to: User
-    user: User
   }
 
-  type AddUserResponse {
+  type LoginResponse {
     user: User
     response: String
   }
@@ -37,21 +36,20 @@ const typeDefs = gql`
   # there are two. messages and users
   type Query {
     messages: [Message]
-    messagesUserToUser(from: String, to: String): [Message]
-    friends(id: String): [User]
-    user(id: String): User
-    onlineUsers(id: String): [User]
+    messagesUserToUser(from: Int, to: Int): [Message]
+    user(id: Int): User
+    onlineUsers(id: Int): [User]
   }
 
   type Mutation {
-    addMessage(text: String!, from: String!, to: String!): Message
-    addUser(username: String!): AddUserResponse
+    addMessage(text: String!, from: Int!, to: Int!): Message
+    login(username: String!): LoginResponse
     logout(username: String!): Boolean
   }
 
   type Subscription {
-    messageAdded(repoFullName: String!, id: String!): Message
-    userLoggedIn(repoFullName: String): User
+    messageAdded(id: Int!): Message
+    userLoggedIn: User
   }
 `
 
@@ -59,12 +57,11 @@ const typeDefs = gql`
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
-    messages: (_) => messages,
     messagesUserToUser: (root, { from, to }) => {
       const res = messages.filter(
         (message) =>
-          (message.from == from && message.to == to) ||
-          (message.to == from && message.from == to)
+          (message.from === from && message.to === to) ||
+          (message.to === from && message.from === to)
       )
 
       return res
@@ -72,23 +69,6 @@ const resolvers = {
     onlineUsers: (root, { id }) => {
       const usersOn = users.filter((user) => user.online && user.id != id)
       return usersOn
-    },
-    friends: (root, { id }) => {
-      let friendsIds = []
-      for (const msg of messages) {
-        if (msg.from == id) {
-          friendsIds.push(msg.to)
-        }
-        if (msg.to == id) {
-          friendsIds.push(msg.from)
-        }
-      }
-
-      const friends = users.filter((user) => {
-        if (friendsIds.includes(user.id)) return user
-      })
-
-      return friends
     },
     user: (root, { id }) => users.find((user) => user.id == id)
   },
@@ -100,14 +80,13 @@ const resolvers = {
         id: messages.length + 1,
         text: text,
         to: to,
-        from: from,
-        user: from
+        from: from
       }
       messages.push(newMessage)
       pubsub.publish('messageAdded', { messageAdded: newMessage })
       return newMessage
     },
-    addUser: (root, { username }) => {
+    login: (root, { username }) => {
       const foundUserIndex = users.findIndex((user) => user.name === username)
 
       if (foundUserIndex !== -1) {
@@ -115,7 +94,7 @@ const resolvers = {
         pubsub.publish('userLoggedIn', { userLoggedIn: users[foundUserIndex] })
         return { user: users[foundUserIndex], response: 'Welcome back.' }
       }
-      const newUser = { id: users.length, name: username, online: true }
+      const newUser = { id: users.length + 1, name: username, online: true }
       users.push(newUser)
       pubsub.publish('userLoggedIn', { userLoggedIn: newUser })
 
@@ -131,11 +110,7 @@ const resolvers = {
       }
     }
   },
-  User: {
-    messages: (user) => messages.filter((message) => message.user == user.id)
-  },
   Message: {
-    user: (message) => users.find((user) => user.id == message.user),
     from: (message) => users.find((user) => user.id == message.from),
     to: (message) => users.find((user) => user.id == message.to)
   },
@@ -144,12 +119,11 @@ const resolvers = {
       subscribe: withFilter(
         () => pubsub.asyncIterator('messageAdded'),
         (payload, variables) => {
-          //
-          //
-          //
+          // console.log('variables: ', variables)
+          // console.log('payload: ', payload)
           return (
-            payload.messageAdded.from == variables.id ||
-            payload.messageAdded.to == variables.id
+            payload.messageAdded.from === variables.id ||
+            payload.messageAdded.to === variables.id
           )
         }
       )
@@ -166,16 +140,16 @@ const resolvers = {
 }
 
 const messages = [
-  { id: 0, text: 'Hello World!', user: 0, to: 0, from: 1 },
-  { id: 1, text: 'Hey', user: 1, to: 1, from: 0 },
-  { id: 2, text: 'w', user: 1, to: 1, from: 0 },
-  { id: 3, text: 'invisble', user: 1, to: 1, from: 2 },
-  { id: 4, text: 'hey man how u doing', user: 0, to: 0, from: 2 }
+  { id: 1, text: 'Hello World!', to: 1, from: 2 },
+  { id: 2, text: 'Hey', to: 2, from: 1 },
+  { id: 3, text: 'w', to: 2, from: 1 },
+  { id: 4, text: 'invisble', to: 2, from: 3 },
+  { id: 5, text: 'hey man how u doing', to: 1, from: 3 }
 ]
 const users = [
-  { id: 0, name: 'Joes' },
-  { id: 1, name: 'Jack' },
-  { id: 2, name: 'Julia' }
+  { id: 1, name: 'Joes' },
+  { id: 2, name: 'Jack' },
+  { id: 3, name: 'Julia' }
 ]
 
 const server = new ApolloServer({ typeDefs, resolvers })

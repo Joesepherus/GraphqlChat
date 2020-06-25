@@ -13,8 +13,8 @@ import gql from 'graphql-tag'
 import { useQuery, useSubscription } from '@apollo/react-hooks'
 
 const MESSAGES_SUBSCRIPTION = gql`
-  subscription onMessageAdded($repoFullName: String!, $id: String!) {
-    messageAdded(repoFullName: $repoFullName, id: $id) {
+  subscription onMessageAdded($id: Int!) {
+    messageAdded(id: $id) {
       text
       from {
         id
@@ -28,10 +28,8 @@ const MESSAGES_SUBSCRIPTION = gql`
   }
 `
 
-const repoFullName = 'apollographql/apollo-client'
-
 const MessengerScreen = (props) => {
-  const [selectedFriend, setSelectedFriend] = useState('')
+  const [selectedFriend, setSelectedFriend] = useState()
   const [
     newMessageFromSelectedFriend,
     setNewMessageFromSelectedFriend
@@ -41,7 +39,7 @@ const MessengerScreen = (props) => {
   const audio = new Audio('./icq2.mp4')
 
   const { data } = useSubscription(MESSAGES_SUBSCRIPTION, {
-    variables: { repoFullName, id: props.store.user.id }
+    variables: { id: props.store.user.id }
   })
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/react-hooks'
 import Message from '../Message/Message'
 
 const messagesListQuery = gql`
-  query messagesUserToUser($from: String!, $to: String!) {
+  query messagesUserToUser($from: Int, $to: Int) {
     messagesUserToUser(from: $from, to: $to) {
       id
       text

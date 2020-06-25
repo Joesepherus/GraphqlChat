@@ -16,6 +16,12 @@
   margin-top: 10px;
 }
 
+@media(max-width: 800px) {
+  .friendListItem {
+    width: unset;
+  }
+}
+
 .active {
   background: #f4f4f4;
 }

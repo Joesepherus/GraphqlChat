@@ -32,14 +32,14 @@ class store {
     await client
       .query({
         query: gql`
-          query getUser($id: String!) {
+          query getUser($id: Int!) {
             user(id: $id) {
               id
               name
             }
           }
         `,
-        variables: { id: userId }
+        variables: { id: parseInt(userId) }
       })
       .then((response) => {
         user = response.data.user

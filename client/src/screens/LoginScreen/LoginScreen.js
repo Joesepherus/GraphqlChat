@@ -8,8 +8,8 @@ import gql from 'graphql-tag'
 import { observer, inject } from 'mobx-react'
 
 const ADD_USER = gql`
-  mutation addUser($username: String!) {
-    addUser(username: $username) {
+  mutation login($username: String!) {
+    login(username: $username) {
       user {
         id
         name
@@ -21,17 +21,25 @@ const ADD_USER = gql`
 
 const LoginPage = (props) => {
   const [username, setUsername] = useState('')
-  const [addUser, { data }] = useMutation(ADD_USER)
+  const [login, { data }] = useMutation(ADD_USER)
 
   useEffect(() => {
-    if (data && data.addUser.user) {
-      props.store.login(data.addUser)
+    if (data && data.login.user) {
+      props.store.login(data.login)
     }
   }, [data])
 
   function startChat() {
-    addUser({ variables: { username: username } })
-    setUsername('')
+    if (username !== '') {
+      login({ variables: { username: username } })
+      setUsername('')
+    }
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === 'Enter') {
+      startChat()
+    }
   }
 
   return (
@@ -42,6 +50,7 @@ const LoginPage = (props) => {
           label="username"
           value={username}
           onChange={(value) => setUsername(value)}
+          onKeyDown={handleKeyDown}
         />
         <MaterialButton onClick={() => startChat()}>start chat</MaterialButton>
       </div>

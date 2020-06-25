@@ -30,7 +30,8 @@ class Input extends Component {
       multiline,
       className,
       helperText,
-      rows
+      rows,
+      onKeyDown
     } = this.props
 
     return (
@@ -49,6 +50,7 @@ class Input extends Component {
           InputLabelProps={{
             shrink: true
           }}
+          onKeyDown={(event) => onKeyDown(event)}
         />
       </div>
     )
