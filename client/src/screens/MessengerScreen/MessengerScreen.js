@@ -67,7 +67,11 @@ const MessengerScreen = (props) => {
 
   function unreadMessagesCount(messages) {
     const totalUnread = messages.reduce(
-      (accumulator, msg) => accumulator + msg.count,
+      (accumulator, msg) => {
+        if(msg.id !==props.store.user.id){
+          return accumulator + msg.count
+        }
+        },
       0
     )
     return totalUnread
@@ -94,6 +98,7 @@ const MessengerScreen = (props) => {
 
   function setTitleUnread(messages) {
     const unreadCount = unreadMessagesCount(messages)
+    console.log('unreadCount: ', unreadCount);
     if (unreadCount) document.title = `Cracked FB (${unreadCount})`
     else {
       document.title = `Cracked FB`
